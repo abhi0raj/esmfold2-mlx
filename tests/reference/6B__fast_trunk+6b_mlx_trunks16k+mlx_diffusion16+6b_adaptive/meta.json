@@ -1,0 +1,16 @@
+{
+ "model": "6B",
+ "stack": "fast_trunk,6b_mlx_trunks16k,mlx_diffusion16,6b_adaptive",
+ "fold": {
+  "num_loops": 3,
+  "num_sampling_steps": 20,
+  "num_diffusion_samples": 1,
+  "seed": 0
+ },
+ "seconds": {
+  "ubiquitin_76": 1.052,
+  "7QFG_146": 2.914,
+  "gfp_238": 6.492,
+  "barnase_barstar": 4.22
+ }
+}

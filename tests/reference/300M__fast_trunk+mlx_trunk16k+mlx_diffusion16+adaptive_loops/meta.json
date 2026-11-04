@@ -1,0 +1,16 @@
+{
+ "model": "300M",
+ "stack": "fast_trunk,mlx_trunk16k,mlx_diffusion16,adaptive_loops",
+ "fold": {
+  "num_loops": 3,
+  "num_sampling_steps": 20,
+  "num_diffusion_samples": 1,
+  "seed": 0
+ },
+ "seconds": {
+  "ubiquitin_76": 0.583,
+  "7QFG_146": 2.39,
+  "gfp_238": 4.594,
+  "barnase_barstar": 3.318
+ }
+}

@@ -1,0 +1,13 @@
+# The exact versions every number in the README was produced with (Python 3.12.11, Apple silicon).
+# `esm` is pinned to the Biohub commit tested; pip install -r requirements-lock.txt, then pip install --no-deps .
+esm @ git+https://github.com/Biohub/esm.git@43b4548b86762edfa747b07d5f440aad3c33acee
+torch==2.11.0
+mlx==0.32.3
+mlx-metal==0.32.3
+transformers==4.57.6
+huggingface-hub==0.36.2
+safetensors==0.8.0
+numpy==2.5.3
+pandas==3.0.6
+tmtools==0.3.0
+matplotlib==3.11.2
