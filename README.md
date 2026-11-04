@@ -24,12 +24,15 @@ separate runs: 18.4 GB for Biohub's code, 6.9 GB here (5.6 GB steady). Full tabl
 
 ## Install
 
-Needs an Apple-silicon Mac and Python 3.12. From a clone of this repository:
+Needs an Apple-silicon Mac and Python 3.12:
 
 ```bash
 uv venv --python 3.12 .venv && source .venv/bin/activate
-uv pip install .
+uv pip install git+https://github.com/abhi0raj/esmfold2-mlx
 ```
+
+Plain `pip install git+https://github.com/abhi0raj/esmfold2-mlx` works too. To run the checks in `tools/`,
+clone the repository and install from the clone with `uv pip install ".[eval]"`.
 
 The first run downloads Biohub's weights from Hugging Face. The 300M checkpoint is about 0.7 GB. The 6B needs
 the 26 GB checkpoint once, plus a 6.7 GB 8-bit copy of its language model that this package builds and
@@ -133,6 +136,9 @@ Run these from the repository root. Close other GPU-heavy apps before timing any
 
 ## Caveats
 
+- **Single sequence, proteins only.** ESMFold2-Fast and the experimental checkpoints take one sequence per
+  chain, with no multiple sequence alignment (MSA). Biohub's larger MSA-capable ESMFold2 is not supported, and
+  nor are the DNA, RNA and ligand inputs Biohub's model accepts.
 - **Both baselines are patched to run.** Biohub's code does not run on a Mac as shipped: its bf16 language
   model fails on Apple GPUs, PyTorch's Apple backend lacks one integer operation it uses, and the 6B loader reads
   all 26 GB into memory before converting it. So the baselines run the language model in fp32 (300M) or fp16
