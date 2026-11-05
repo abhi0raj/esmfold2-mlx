@@ -2,7 +2,7 @@
 
 [Biohub's ESMFold2](https://huggingface.co/biohub/ESMFold2) on Apple silicon: the same model, several times
 faster than Biohub's own code on the same Mac, and with 2.7x less memory for the 6B model. Accuracy is unchanged
-for the 300M model; the 6B's 8-bit language model costs a little (mean TM-score -0.002, details below).
+for the 300M model; the 6B is within a mean TM-score of 0.004 of Biohub's code (details below).
 Unofficial port: it is not affiliated with Biohub. Weights come from Biohub's own repositories.
 
 Measured on an M1 Pro (16-core GPU, 32 GB):
@@ -21,6 +21,13 @@ separate runs: 18.4 GB for Biohub's code, 6.9 GB here (5.6 GB steady). Full tabl
 
 \* Biohub's code does not run on a Mac as shipped, so both baselines carry the minimum fixes it needs to run
 (see Caveats). None of them is a speed-up.
+
+**Same precision on both sides.** The default 6B uses an 8-bit language model and Biohub's baseline fp16, so
+`--model 6B-f16` (fp16 language model, everything else the same) separates the engineering from the quantisation.
+Measured on the same Mac in one session (2026-11-05), folding GFP: Biohub's code 54.0 s and 20.0 GB; fp16 here
+6.9 s (7.9x) and 7.3 GB; 8-bit here 6.7 s and 6.9 GB. Mean TM-score on the 24 held-out proteins against Biohub's
+code at the same settings: -0.002 at fp16, -0.004 at 8-bit. So the speed-up is not from quantisation, and most of
+the memory saving comes from streaming the language model one layer at a time.
 
 ## Install
 
@@ -109,8 +116,8 @@ passed an accuracy gate on held-out proteins.
 
 The first row speeds up Biohub's PyTorch trunk. The MLX trunk in row 3 then replaces that trunk entirely, so
 its 1.8x is measured against the already-fixed version, and in the default stacks the first fix only affects the
-few PyTorch layers of the same kind that remain. For the 6B, the 8-bit language model and memory trimming are
-what bring peak memory from 18.4 GB to 6.9 GB.
+few PyTorch layers of the same kind that remain. For the 6B, memory trimming (mostly streaming the language model
+one layer at a time) is what brings peak memory from 18.4 GB to 6.9 GB; the 8-bit weights add little.
 
 Accuracy, on 24 held-out proteins released after the training cutoff with no close homologue before it:
 
